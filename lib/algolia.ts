@@ -1,18 +1,19 @@
-import algoliasearch, { SearchClient } from "algoliasearch/lite";
+import algoliasearchLite, { SearchClient } from "algoliasearch/lite";
+import algoliasearch from "algoliasearch";
 import { MultipleQueriesQuery } from "@algolia/client-search";
 
-const algoliaClient = algoliasearch(
+const searchClient = algoliasearchLite(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID as string,
   process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY as string
 );
 
 // this client will stop any empty queries
 // from being sent to algolia
-export const searchClient = {
-  ...algoliaClient,
+export const customSearchClient = {
+  ...searchClient,
   search: (queries: readonly MultipleQueriesQuery[]) =>
     queries.some(({ params }) => Boolean(params?.query))
-      ? algoliaClient.search(queries)
+      ? searchClient.search(queries)
       : Promise.resolve({
           results: queries.map(() => ({
             hits: [],
@@ -29,3 +30,8 @@ export const searchClient = {
           })),
         }),
 } satisfies SearchClient;
+
+export const algoliaServerClient = algoliasearch(
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID as string,
+  process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY as string
+);
