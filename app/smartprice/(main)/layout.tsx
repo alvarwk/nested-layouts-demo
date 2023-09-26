@@ -10,7 +10,8 @@ export default function ProductsLayout({ children }: ProductsLayoutProps) {
     <div className="flex flex-col gap-5">
       <div className="flex gap-5 border border-green-500">
         <Link href="/smartprice">SmartPrice</Link>
-        <Link href="/smartprice/products">Products</Link>
+        <Link href="/smartprice/product/1000000">Product 1000000</Link>
+        <Link href="/smartprice/product/1000001">Product 1000001</Link>
         <Link href="/smartprice/faq">FAQ</Link>
       </div>
       <SearchBox />
