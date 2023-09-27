@@ -9,6 +9,8 @@ interface ProductPageProps {
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export default function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="flex flex-col gap-5">
