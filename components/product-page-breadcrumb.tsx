@@ -41,11 +41,7 @@ export const Breadcrumbs = async ({ productNumber }: BreadcrumbsProps) => {
     <>
       <Breadcrumb>
         <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            href="/smartprice"
-            // onClick={() => updateUiState("/smartprice")}
-          >
+          <BreadcrumbLink as={Link} href="/smartprice">
             {" "}
             Alle produkter
           </BreadcrumbLink>
