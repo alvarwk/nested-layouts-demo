@@ -12,6 +12,9 @@ export default function ProductsLayout({ children }: ProductsLayoutProps) {
         <Link href="/smartprice">SmartPrice</Link>
         <Link href="/smartprice/product/1000000">Product 1000000</Link>
         <Link href="/smartprice/product/1000001">Product 1000001</Link>
+        <a href="/smartprice?dev_products%5BhierarchicalMenu%5D%5Bcategory.lvl0%5D%5B0%5D=Kabel">
+          Filter
+        </a>
         <Link href="/smartprice/faq">FAQ</Link>
       </div>
       <SearchBox />

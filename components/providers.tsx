@@ -1,11 +1,11 @@
 "use client";
-import { customSearchClient } from "@/lib/algolia";
+import { customSearchClient, searchClient } from "@/lib/algolia";
 import { InstantSearchNext } from "react-instantsearch-nextjs";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <InstantSearchNext
-      searchClient={customSearchClient}
+      searchClient={searchClient}
       indexName="dev_products"
       routing
     >

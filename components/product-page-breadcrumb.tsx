@@ -7,10 +7,19 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "./ui/breadcrumb";
 import { cache } from "react";
 
 const INDEX_NAME = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME as string;
+const CATEGORY_QUERY_PARAM_KEY = `${INDEX_NAME}[hierarchicalMenu][category.lvl0]`;
 
 interface BreadcrumbsProps {
   productNumber: string;
 }
+
+interface Crumbs {
+  lvl0: string;
+  lvl1: string;
+  lvl2: string;
+}
+
+const getCategoryName = (categoryLvl: string) => categoryLvl.split(" > ").pop();
 
 export const Breadcrumbs = async ({ productNumber }: BreadcrumbsProps) => {
   const alogliaProduct = await getCachedAlogliaProduct(productNumber);
@@ -19,13 +28,15 @@ export const Breadcrumbs = async ({ productNumber }: BreadcrumbsProps) => {
   if (!crumbs?.lvl0 || !crumbs?.lvl1 || !crumbs?.lvl2) return null;
 
   const buildPath = (level: number) => {
-    const basePath = `/smartprice?${INDEX_NAME}`;
-    const path0 = `${basePath}%5BhierarchicalMenu%5D%5Bcategory.lvl0%5D%5B0%5D=${crumbs.lvl0}`;
-    if (level === 0) return path0;
-    const path1 = `${path0}%5BhierarchicalMenu%5D%5Bcategory.lvl0%5D%5B1%5D=${crumbs.lvl1}`;
-    if (level === 1) return path1;
-    return `${path1}%5BhierarchicalMenu%5D%5Bcategory.lvl0%5D%5B2%5D=${crumbs.lvl2}`;
+    const levels = [
+      `${CATEGORY_QUERY_PARAM_KEY}[0]=${crumbs.lvl0}`,
+      `${CATEGORY_QUERY_PARAM_KEY}[1]=${getCategoryName(crumbs.lvl1)}`,
+      `${CATEGORY_QUERY_PARAM_KEY}[2]=${getCategoryName(crumbs.lvl2)}`,
+    ];
+    const queryString = `${levels.slice(0, level + 1).join("&")}`;
+    return `/smartprice?${queryString}`;
   };
+
   return (
     <>
       <Breadcrumb>
@@ -40,34 +51,13 @@ export const Breadcrumbs = async ({ productNumber }: BreadcrumbsProps) => {
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            href={buildPath(0)}
-            // onClick={() => updateUiState(buildPath(0), crumbs.lvl0!)}
-          >
-            {" "}
-            {crumbs.lvl0}
-          </BreadcrumbLink>
+          <a href={buildPath(0)}> {crumbs.lvl0}</a>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            href={buildPath(1)}
-            // onClick={() => updateUiState(buildPath(1), crumbs.lvl1!)}
-          >
-            {" "}
-            {crumbs.lvl1.split(">")[1]}
-          </BreadcrumbLink>
+          <a href={buildPath(1)}> {crumbs.lvl1.split(">")[1]}</a>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            href={buildPath(2)}
-            // onClick={() => updateUiState(buildPath(2), crumbs.lvl2!)}
-          >
-            {" "}
-            {crumbs.lvl2.split(">")[2]}
-          </BreadcrumbLink>
+          <a href={buildPath(2)}> {crumbs.lvl2.split(">")[2]}</a>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink>{alogliaProduct.productName}</BreadcrumbLink>

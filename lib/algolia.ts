@@ -2,7 +2,7 @@ import algoliasearchLite, { SearchClient } from "algoliasearch/lite";
 import algoliasearch from "algoliasearch";
 import { MultipleQueriesQuery } from "@algolia/client-search";
 
-const searchClient = algoliasearchLite(
+export const searchClient = algoliasearchLite(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID as string,
   process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY as string
 );
